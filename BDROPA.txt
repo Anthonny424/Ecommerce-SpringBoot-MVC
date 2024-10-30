@@ -1,0 +1,296 @@
+drop DATABASE IF EXISTS bdropa;
+create DATABASE bdropa;
+use bdropa;
+
+create table clientes(
+id int not null PRIMARY KEY auto_increment,
+nombre varchar(30),
+apellido varchar(30),
+direccion varchar(80),
+telefono int,
+edad int
+)auto_increment=1;
+
+create table usuarios(
+id int not null PRIMARY KEY AUTO_INCREMENT,
+email varchar(50),
+pass varbinary(100),
+rol varchar(30),
+clientes_id int,
+FOREIGN KEY (clientes_id) REFERENCES clientes(id)
+
+)AUTO_INCREMENT=1;
+
+create table facturas(
+id int NOT null PRIMARY KEY AUTO_INCREMENT,
+fecha datetime,
+total decimal(10,2),
+estado varchar(30),
+clientes_id int,
+FOREIGN KEY (clientes_id) REFERENCES clientes(id)
+)AUTO_INCREMENT=1;
+
+create table ordenes(
+id int NOT null PRIMARY KEY AUTO_INCREMENT,
+nombre varchar(30),
+foto varchar(80),
+cantidad int,
+total decimal(10,2),
+clientes_id int,
+factura_id int,
+FOREIGN KEY (clientes_id) REFERENCES clientes(id),
+FOREIGN KEY (factura_id) REFERENCES facturas(id)
+
+)AUTO_INCREMENT=1;
+
+create table detalles(
+id int NOT null PRIMARY KEY AUTO_INCREMENT,
+nombre varchar(30),
+precio decimal (10,2),
+cantidad int,
+total decimal(10,2),
+idproducto int,
+facturas_id int,
+FOREIGN KEY (facturas_id) REFERENCES facturas(id)
+)AUTO_INCREMENT=1;
+
+create table productos(
+id int NOT null PRIMARY KEY AUTO_INCREMENT,
+stock int,
+genero varchar(30),
+categoria varchar(30),
+estado varchar(30)
+)AUTO_INCREMENT=1;
+
+create table ordenes_productos(
+id int NOT null PRIMARY KEY AUTO_INCREMENT,
+productos_id int,
+ordenes_id int,
+
+FOREIGN KEY (productos_id) REFERENCES productos(id),
+FOREIGN KEY (ordenes_id) REFERENCES ordenes(id)
+)AUTO_INCREMENT=1;
+
+create table ropas(
+id int NOT null PRIMARY KEY AUTO_INCREMENT,
+nombre varchar(30),
+descripcion text,
+marca varchar(30),
+precio decimal(10,2),
+foto varchar(80),
+talla char(3),
+productos_id int,
+
+FOREIGN KEY (productos_id) REFERENCES productos(id)
+)AUTO_INCREMENT=1;
+
+
+INSERT INTO clientes VALUES (null, 'Anthonny', 'Alfaro', 'av lima', 950389633, 20);
+INSERT INTO clientes VALUES (null, 'AnthonnyAdmin', 'Alfaro', 'av lima', 950389633, 20);
+
+INSERT INTO usuarios VALUES (null, 'pool2004@hotmail.com', aes_encrypt('12345678','clave123'),"User", 1);
+INSERT INTO usuarios VALUES (null, 'admin@hotmail.com', aes_encrypt('12345678','clave123'),"Admin", 2);
+
+INSERT INTO `productos` (`id`, `stock`, `genero`, `categoria`, `estado`) VALUES
+(1, 0, 'Hombre', 'Casual', 'active'),
+(2, 10, 'Hombre', 'Casual', 'active'),
+(3, 20, 'Hombre', 'Casual', 'active'),
+(4, 60, 'Hombre', 'Casual', 'active'),
+(5, 100, 'Hombre', 'Casual', 'active'),
+(6, 150, 'Hombre', 'Casual', 'active'),
+(7, 180, 'Hombre', 'Casual', 'active'),
+(8, 200, 'Hombre', 'Casual', 'active'),
+(9, 200, 'Hombre', 'Casual', 'active'),
+(10, 200, 'Hombre', 'Casual', 'active'),
+(11, 200, 'Hombre', 'Casual', 'active'),
+(12, 200, 'Mujer', 'Casual', 'active'),
+(13, 200, 'Mujer', 'Casual', 'active'),
+(14, 200, 'Mujer', 'Casual', 'active'),
+(15, 200, 'Mujer', 'Casual', 'active'),
+(16, 200, 'Mujer', 'Casual', 'active'),
+(17, 200, 'Mujer', 'Casual', 'active'),
+(18, 200, 'Mujer', 'Casual', 'active'),
+(19, 200, 'Mujer', 'Casual', 'active'),
+(22, 200, 'Hombre', 'Deporte', 'active'),
+(23, 200, 'Hombre', 'Deporte', 'active'),
+(24, 200, 'Hombre', 'Deporte', 'active'),
+(25, 200, 'Mujer', 'Deporte', 'active'),
+(26, 200, 'Mujer', 'Deporte', 'active'),
+(27, 200, 'Mujer', 'Deporte', 'active'),
+(28, 200, 'Hombre', 'Deporte', 'active'),
+(29, 200, 'Hombre', 'Deporte', 'active'),
+(30, 200, 'Hombre', 'Deporte', 'active'),
+(31, 200, 'Hombre', 'Deporte', 'active'),
+(32, 200, 'Mujer', 'Niños', 'active'),
+(33, 200, 'Hombre', 'Niños', 'active'),
+(34, 200, 'Hombre', 'Niños', 'active'),
+(35, 200, 'Hombre', 'Niños', 'active'),
+(36, 200, 'Hombre', 'Niños', 'active'),
+(37, 200, 'Hombre', 'Formal', 'active'),
+(38, 200, 'Hombre', 'Formal', 'active'),
+(39, 200, 'Hombre', 'Formal', 'active'),
+(40, 200, 'Hombre', 'Formal', 'active'),
+(41, 200, 'Hombre', 'Verano', 'active'),
+(42, 200, 'Hombre', 'Verano', 'active'),
+(43, 200, 'Hombre', 'Verano', 'active');
+
+
+
+
+INSERT INTO `ropas` (`id`, `nombre`, `descripcion`, `marca`, `precio`, `foto`, `talla`, `productos_id`) VALUES
+(1, 'Polera con Capucha Beige', 'Polera Beige manga larga unisex de algodon para gente juvenil', 'Yansus', 80.00, 'image-32c7612a7ca64a0080b0e33344712092.jpg', 'M', 1),
+(2, 'Polera Crema Capucha Negro', 'Polera crema manga larga unisex de algodon para gente juvenil', 'Yansus', 75.00, 'imageUrl_1.jpg', 'M', 2),
+(3, 'Polera CON ZIP COLLATERAL HOOD', 'Polera liviana de algodon azul', 'Dunkelvolk', 114.00, 'PoleraAzulBeige.jpg', 'S', 3),
+(4, 'Pantalón Cargo Relaxed Fit', 'Pantalón oversize perfecto para jóvenes', 'H&M', 169.00, 'PantalonCargo.jpg', 'XL', 4),
+(5, 'Pantalón Jean DarkBlue', 'Pantalón jean cómodo y flexible', 'St. Jack\'s', 160.00, 'PantalonJean.jpg', 'S', 5),
+(6, 'Polo Oversize Café', 'Polo café de algodón idea para jóvenes', 'H&M', 28.00, 'PoloCafe.jpg', 'XL', 6),
+(7, 'Polo Azul Noche ', 'Polo azul noche manga corta para época de verano', 'H&M', 38.00, 'PoloBlue.jpg', 'M', 7),
+(8, 'Casaca Adidas Negra Aeroready', 'Casaca Deportiva Ajustada AEROREADY Sereno Cut 3 Tiras ', 'Adidas', 210.00, 'CasacaAdidas.jpg', 'L', 8),
+(9, 'Casaca Azul Marino Valirite', 'Casaca Adidas Varilite Ho Jacket para invierno', 'Adidas', 250.00, 'CasacaAdidasJacket.jpg', 'L', 9),
+(10, 'Gorra Azul DODGERS 940-17', 'Gorra para el verano 100% algodón', 'New Era', 119.00, 'GorraNewEra.jpg', 'M', 10),
+(11, 'Gorra Gris Trucked', 'Gorro Adidas Curved Trucker - Negro', 'Adidas', 99.00, 'GorraAdidas.jpg', 'L', 11),
+(12, 'Blusa para mujer con cuadros ', 'Polera juvenil para adolescentes de algodon', 'Basis', 59.00, 'BlusaMujer.jpg', 'S', 12),
+(13, 'Polo para dama color rosa', 'Polo Básico para Dama', 'Basis', 25.00, 'PoloRosado.jpg', 'S', 13),
+(14, 'Polo Bividi Café', 'Polo Bividi de 100% algodón - Estandar - Moda', 'Basis', 68.00, 'PoloBividiMujer.jpg', 'S', 14),
+(15, 'Blusa Negra', 'Blusa Negra Elegante para Dama', 'H&M', 47.00, 'BlusaNegra.jpg', 'S', 15),
+(16, 'Blusa Verde', 'Blusa Verde 100% algodón para dama - elegante', 'H&M', 56.00, 'BlusaVerdeMujer.jpg', 'M', 16),
+(17, 'Vestido Rojo Elegante', 'Vestido Rojo Elegante para dama', 'H&M', 180.00, 'VestidoRojo.jpg', 'L', 17),
+(18, 'Falda Negra Juvenil', 'Falda Negra Juvenil para damas', 'H&M', 75.00, 'FaldaNegra.jpg', 'M', 18),
+(19, 'Abrigo Rojo para Dama', '\"Casaca Parka Mujer Con Capucha Abrigo Moda Coreana Color GUINDA\"', 'H&M', 119.00, 'AbrigoRojoMujer.jpg', 'L', 19),
+(22, 'Camiseta de la Selección Perua', 'Camiseta oficial de la selección peruana con tecnología antitranspirante y bordado dorado', 'Adidas', 259.00, 'camisetaperu.jpg', 'M', 22),
+(23, 'Polo Gym Negro', 'Polo Deportivo para atletas, color negro', 'Adidas', 119.00, 'PoloNegroDeporte.jpg', 'M', 23),
+(24, 'Conjunto Buzo Deportivo', 'Casaca y pantalón deportivo para atletas', 'Adidas', 350.00, 'BuzoDeportivo.jpg', 'L', 24),
+(25, 'Casaca Deportiva para mujer', 'Casaca Buzo para el gym', 'I-RUN', 99.00, 'CasacaDeportivaMujer.jpg', 'S', 25),
+(26, 'Complemento Deportivo Mujer', 'Gym para ellas - deporte', 'Adidas', 50.00, 'BraMujerDeporte.jpg', 'S', 26),
+(27, 'Short Negro Mujer', 'Short deportivo para ellas - gym', 'Adidas', 75.00, 'ShortDeporteMujer.jpg', 'M', 27),
+(28, 'Conjunto Deportivo Negro ', 'Conjunto perfecto para el gym - black', 'Adidas', 450.00, 'ConjuntoNegroDeporte.jpg', 'L', 28),
+(29, 'Conjunto Sudadera Verde', 'Buzo verde para ellos - gym', 'Puma', 250.00, 'SudaderaVerde.jpg', 'M', 29),
+(30, 'Camiseta Perú Segunda', 'Camiseta de la selección peruana-segunda', 'Adidas', 275.00, 'CamisetaPeruSegunda.jpg', 'L', 30),
+(31, 'Camiseta Portero Perú', 'Camisera del portero de la selección peruana', 'Marathon', 175.00, 'CamisetaPorteroPeru.jpg', 'XL', 31),
+(32, 'Ropa para niños', 'Par de prendas para niños', 'H&M', 75.00, 'RopaNiños.jpg', 'S', 32),
+(33, 'Pijama Niño', 'Pijama polar para niños', 'H&M', 35.00, 'PijamaNiño.jpg', 'S', 33),
+(34, 'Camisa Tiras', 'Camisa con tiras para niños', 'H&M', 25.00, 'CamisaTirasNiño.jpg', 'S', 34),
+(35, 'Pantalón Yean', 'Pantalon year con correa', 'Yoshiro', 75.00, 'PantalonJeanNiño.jpg', 'S', 35),
+(36, 'Camisa Cuadros Gris', 'Camisa a cuadros para niños', 'Balu Kids', 75.00, 'CamisaGrisNiño.jpg', 'S', 36),
+(37, 'Blazer Slim Fit Cyan', 'Saco elegante para varón elaborado con telas finas', 'H&M', 249.00, 'Terno.jpg', 'L', 37),
+(38, 'Chaleto negro formal y elegant', 'Ropa formal y elegante para hombre', 'H&M', 189.00, 'Chaleco.jpg', 'M', 38),
+(39, 'Corbata Azul para hombre', 'Corbata elegante a rayas para hombres de negocio', 'H&M', 75.00, 'CorbataAzul.jpg', 'M', 39),
+(40, 'Saco y conjunto Negro elegante', 'Conjunto formal con saco, corbata, camisa.', 'H&M', 389.00, 'SacoNegro.jpg', 'L', 40),
+(41, 'Short Playero Hombre Bermudas', 'Short perfecto para uso en la playa, salir a correr y/o uso diario', 'Falabella', 40.00, 'ShortBermuda.jpg', 'S', 41),
+(42, 'Bividi Negro de Verano', 'Bividi Negro 100 algodon para verano', 'Big Head', 75.00, 'BividiNegro.jpg', 'M', 42),
+(43, 'Conjunto de Hombre para Verano', 'Conjunto de hombre para verano conformado por polo y short', 'Sydney', 99.00, 'ConjuntoVerano.jpg', 'M', 43);
+
+INSERT INTO `facturas`(`id`, `fecha`, `total`,`estado`,`clientes_id`) VALUES (null,'2023-01-19 19:53:13',500.0, 'cancelado',1);
+INSERT INTO `facturas`(`id`, `fecha`, `total`,`estado`, `clientes_id`) VALUES (null,'2023-01-19 19:53:13',900.0,'cancelado', 1);
+INSERT INTO `facturas`(`id`, `fecha`, `total`,`estado`, `clientes_id`) VALUES (null,'2023-01-19 19:53:13',500.0, 'cancelado',1);
+INSERT INTO `facturas`(`id`, `fecha`, `total`,`estado`, `clientes_id`) VALUES (null,'2023-01-19 19:53:13',100.0,'cancelado', 1);
+INSERT INTO `facturas`(`id`, `fecha`, `total`,`estado`, `clientes_id`) VALUES (null,'2023-01-19 19:53:13',400.0,'cancelado', 1);
+
+INSERT INTO `facturas`(`id`, `fecha`, `total`,`estado`, `clientes_id`) VALUES (null,'2023-02-19 19:53:13',500.0, 'cancelado',1);
+INSERT INTO `facturas`(`id`, `fecha`, `total`,`estado`, `clientes_id`) VALUES (null,'2023-02-19 19:53:13',300.0,'cancelado', 1);
+INSERT INTO `facturas`(`id`, `fecha`, `total`,`estado`, `clientes_id`) VALUES (null,'2023-02-19 19:53:13',1200.0,'cancelado',1);
+INSERT INTO `facturas`(`id`, `fecha`, `total`,`estado`, `clientes_id`) VALUES (null,'2023-02-19 19:53:13',700.0,'cancelado', 1);
+INSERT INTO `facturas`(`id`, `fecha`, `total`,`estado`, `clientes_id`) VALUES (null,'2023-02-19 19:53:13',300.0,'cancelado', 1);
+
+INSERT INTO `facturas`(`id`, `fecha`, `total`,`estado`, `clientes_id`) VALUES (null,'2023-03-19 19:53:13',1500.0,'cancelado', 1);
+INSERT INTO `facturas`(`id`, `fecha`, `total`,`estado`, `clientes_id`) VALUES (null,'2023-03-19 19:53:13',900.0,'cancelado', 1);
+INSERT INTO `facturas`(`id`, `fecha`, `total`,`estado`, `clientes_id`) VALUES (null,'2023-03-19 19:53:13',600.0,'cancelado', 1);
+INSERT INTO `facturas`(`id`, `fecha`, `total`,`estado`, `clientes_id`) VALUES (null,'2023-03-19 19:53:13',180.0,'cancelado', 1);
+INSERT INTO `facturas`(`id`, `fecha`, `total`,`estado`, `clientes_id`) VALUES (null,'2023-03-19 19:53:13',310.0,'cancelado', 1);
+
+INSERT INTO `facturas`(`id`, `fecha`, `total`,`estado`, `clientes_id`) VALUES (null,'2023-04-19 19:53:13',100.0,'cancelado', 1);
+INSERT INTO `facturas`(`id`, `fecha`, `total`,`estado`, `clientes_id`) VALUES (null,'2023-04-19 19:53:13',100.0,'cancelado', 1);
+INSERT INTO `facturas`(`id`, `fecha`, `total`,`estado`, `clientes_id`) VALUES (null,'2023-04-19 19:53:13',100.0,'cancelado', 1);
+INSERT INTO `facturas`(`id`, `fecha`, `total`,`estado`, `clientes_id`) VALUES (null,'2023-04-19 19:53:13',100.0,'cancelado', 1);
+INSERT INTO `facturas`(`id`, `fecha`, `total`,`estado`, `clientes_id`) VALUES (null,'2023-04-19 19:53:13',200.0,'cancelado', 1);
+
+INSERT INTO `facturas`(`id`, `fecha`, `total`,`estado`, `clientes_id`) VALUES (null,'2023-05-19 19:53:13',500.0,'cancelado', 1);
+INSERT INTO `facturas`(`id`, `fecha`, `total`,`estado`, `clientes_id`) VALUES (null,'2023-05-19 19:53:13',900.0,'cancelado', 1);
+INSERT INTO `facturas`(`id`, `fecha`, `total`,`estado`, `clientes_id`) VALUES (null,'2023-05-19 19:53:13',500.0,'cancelado', 1);
+INSERT INTO `facturas`(`id`, `fecha`, `total`,`estado`, `clientes_id`) VALUES (null,'2023-06-19 19:53:13',100.0,'cancelado', 1);
+INSERT INTO `facturas`(`id`, `fecha`, `total`,`estado`, `clientes_id`) VALUES (null,'2023-06-19 19:53:13',400.0,'cancelado', 1);
+
+INSERT INTO `facturas`(`id`, `fecha`, `total`,`estado`, `clientes_id`) VALUES (null,'2023-06-19 19:53:13',500.0,'cancelado', 1);
+INSERT INTO `facturas`(`id`, `fecha`, `total`,`estado`, `clientes_id`) VALUES (null,'2023-07-19 19:53:13',900.0,'cancelado', 1);
+INSERT INTO `facturas`(`id`, `fecha`, `total`,`estado`, `clientes_id`) VALUES (null,'2023-07-19 19:53:13',500.0,'cancelado', 1);
+INSERT INTO `facturas`(`id`, `fecha`, `total`,`estado`, `clientes_id`) VALUES (null,'2023-07-19 19:53:13',100.0,'cancelado', 1);
+INSERT INTO `facturas`(`id`, `fecha`, `total`,`estado`, `clientes_id`) VALUES (null,'2023-07-19 19:53:13',400.0,'cancelado', 1);
+
+INSERT INTO `facturas`(`id`, `fecha`, `total`,`estado`, `clientes_id`) VALUES (null,'2023-08-19 19:53:13',500.0,'cancelado', 1);
+INSERT INTO `facturas`(`id`, `fecha`, `total`,`estado`, `clientes_id`) VALUES (null,'2023-08-19 19:53:13',900.0,'cancelado', 1);
+INSERT INTO `facturas`(`id`, `fecha`, `total`,`estado`, `clientes_id`) VALUES (null,'2023-09-19 19:53:13',500.0,'cancelado', 1);
+INSERT INTO `facturas`(`id`, `fecha`, `total`,`estado`, `clientes_id`) VALUES (null,'2023-09-19 19:53:13',1400.0,'cancelado', 1);
+INSERT INTO `facturas`(`id`, `fecha`, `total`, `estado`,`clientes_id`) VALUES (null,'2023-09-19 19:53:13',400.0,'cancelado', 1);
+
+INSERT INTO `facturas`(`id`, `fecha`, `total`,`estado`, `clientes_id`) VALUES (null,'2023-10-19 19:53:13',1500.0,'cancelado', 1);
+INSERT INTO `facturas`(`id`, `fecha`, `total`,`estado`, `clientes_id`) VALUES (null,'2023-10-19 19:53:13', 200.0,'cancelado', 1);
+INSERT INTO `facturas`(`id`, `fecha`, `total`,`estado`, `clientes_id`) VALUES (null,'2023-11-19 19:53:13', 900.0,'cancelado', 1);
+INSERT INTO `facturas`(`id`, `fecha`, `total`,`estado`, `clientes_id`) VALUES (null,'2023-11-19 19:53:13', 300.0,'cancelado', 1);
+INSERT INTO `facturas`(`id`, `fecha`, `total`,`estado`, `clientes_id`) VALUES (null,'2023-11-19 19:53:13', 700.0,'cancelado', 1);
+
+INSERT INTO `facturas`(`id`, `fecha`, `total`,`estado`, `clientes_id`) VALUES (null,'2023-12-19 19:53:13',1500.0, 'cancelado',1);
+INSERT INTO `facturas`(`id`, `fecha`, `total`,`estado`, `clientes_id`) VALUES (null,'2023-12-19 19:53:13',1900.0,'cancelado', 1);
+INSERT INTO `facturas`(`id`, `fecha`, `total`,`estado`, `clientes_id`) VALUES (null,'2023-12-19 19:53:13',600.0,'cancelado', 1);
+INSERT INTO `facturas`(`id`, `fecha`, `total`,`estado`, `clientes_id`) VALUES (null,'2023-12-19 19:53:13',800.0,'cancelado', 1);
+INSERT INTO `facturas`(`id`, `fecha`, `total`,`estado`, `clientes_id`) VALUES (null,'2023-12-19 19:53:13',250.0,'cancelado', 1);
+
+INSERT INTO `facturas`(`id`, `fecha`, `total`,`estado`, `clientes_id`) VALUES (null,'2024-01-19 19:53:13',700.0,'cancelado', 1);
+INSERT INTO `facturas`(`id`, `fecha`, `total`,`estado`, `clientes_id`) VALUES (null,'2024-01-19 19:53:13',460.0, 'cancelado',1);
+INSERT INTO `facturas`(`id`, `fecha`, `total`,`estado`, `clientes_id`) VALUES (null,'2024-01-19 19:53:13',340.0,'cancelado', 1);
+INSERT INTO `facturas`(`id`, `fecha`, `total`,`estado`, `clientes_id`) VALUES (null,'2024-01-19 19:53:13',420.0,'cancelado', 1);
+INSERT INTO `facturas`(`id`, `fecha`, `total`,`estado`, `clientes_id`) VALUES (null,'2024-01-19 19:53:13',230.0,'cancelado', 1);
+
+INSERT INTO `facturas`(`id`, `fecha`, `total`,`estado`, `clientes_id`) VALUES (null,'2024-02-19 19:53:13',800.0,'cancelado', 1);
+INSERT INTO `facturas`(`id`, `fecha`, `total`,`estado`, `clientes_id`) VALUES (null,'2024-02-19 19:53:13',560.0,'cancelado', 1);
+INSERT INTO `facturas`(`id`, `fecha`, `total`,`estado`, `clientes_id`) VALUES (null,'2024-02-19 19:53:13',140.0,'cancelado', 1);
+INSERT INTO `facturas`(`id`, `fecha`, `total`,`estado`, `clientes_id`) VALUES (null,'2024-02-19 19:53:13',820.0, 'cancelado',1);
+INSERT INTO `facturas`(`id`, `fecha`, `total`,`estado`, `clientes_id`) VALUES (null,'2024-02-19 19:53:13',1230.0,'cancelado', 1);
+
+INSERT INTO `facturas`(`id`, `fecha`, `total`,`estado`, `clientes_id`) VALUES (null,'2024-03-19 19:53:13',800.0,'cancelado', 1);
+INSERT INTO `facturas`(`id`, `fecha`, `total`,`estado`, `clientes_id`) VALUES (null,'2024-03-19 19:53:13',560.0,'cancelado', 1);
+INSERT INTO `facturas`(`id`, `fecha`, `total`,`estado`, `clientes_id`) VALUES (null,'2024-03-19 19:53:13',1240.0,'cancelado', 1);
+INSERT INTO `facturas`(`id`, `fecha`, `total`,`estado`, `clientes_id`) VALUES (null,'2024-03-19 19:53:13',920.0,'cancelado', 1);
+INSERT INTO `facturas`(`id`, `fecha`, `total`,`estado`, `clientes_id`) VALUES (null,'2024-03-19 19:53:13',930.0,'cancelado', 1);
+
+INSERT INTO `facturas`(`id`, `fecha`, `total`,`estado`, `clientes_id`) VALUES (null,'2024-04-19 19:53:13',760.0,'cancelado', 1);
+INSERT INTO `facturas`(`id`, `fecha`, `total`,`estado`, `clientes_id`) VALUES (null,'2024-04-19 19:53:13',1460.0,'cancelado', 1);
+INSERT INTO `facturas`(`id`, `fecha`, `total`,`estado`, `clientes_id`) VALUES (null,'2024-04-19 19:53:13',1340.0,'cancelado', 1);
+INSERT INTO `facturas`(`id`, `fecha`, `total`,`estado`, `clientes_id`) VALUES (null,'2024-04-19 19:53:13',420.0,'cancelado', 1);
+INSERT INTO `facturas`(`id`, `fecha`, `total`,`estado`, `clientes_id`) VALUES (null,'2024-04-19 19:53:13',930.0,'cancelado', 1);
+
+INSERT INTO `facturas`(`id`, `fecha`, `total`,`estado`, `clientes_id`) VALUES (null,'2024-05-19 19:53:13',760.0,'cancelado', 1);
+INSERT INTO `facturas`(`id`, `fecha`, `total`,`estado`, `clientes_id`) VALUES (null,'2024-05-19 19:53:13',1460.0,'cancelado', 1);
+INSERT INTO `facturas`(`id`, `fecha`, `total`,`estado`, `clientes_id`) VALUES (null,'2024-05-19 19:53:13',1340.0,'cancelado', 1);
+INSERT INTO `facturas`(`id`, `fecha`, `total`,`estado`, `clientes_id`) VALUES (null,'2024-05-19 19:53:13',420.0,'cancelado', 1);
+INSERT INTO `facturas`(`id`, `fecha`, `total`,`estado`, `clientes_id`) VALUES (null,'2024-05-19 19:53:13',930.0,'cancelado', 1);
+
+INSERT INTO `facturas`(`id`, `fecha`, `total`,`estado`, `clientes_id`) VALUES (null,'2024-06-19 19:53:13',760.0,'cancelado', 1);
+INSERT INTO `facturas`(`id`, `fecha`, `total`,`estado`, `clientes_id`) VALUES (null,'2024-06-19 19:53:13',1460.0,'cancelado', 1);
+INSERT INTO `facturas`(`id`, `fecha`, `total`,`estado`, `clientes_id`) VALUES (null,'2024-06-19 19:53:13',1340.0,'cancelado', 1);
+INSERT INTO `facturas`(`id`, `fecha`, `total`,`estado`, `clientes_id`) VALUES (null,'2024-06-19 19:53:13',420.0,'cancelado', 1);
+INSERT INTO `facturas`(`id`, `fecha`, `total`,`estado`, `clientes_id`) VALUES (null,'2024-06-19 19:53:13',930.0,'cancelado', 1);
+INSERT INTO `facturas`(`id`, `fecha`, `total`,`estado`, `clientes_id`) VALUES (null,'2024-07-12 19:53:13',760.0,'cancelado', 1);
+INSERT INTO `facturas`(`id`, `fecha`, `total`,`estado`, `clientes_id`) VALUES (null,'2024-07-12 19:53:13',1460.0,'cancelado', 1);
+INSERT INTO `facturas`(`id`, `fecha`, `total`,`estado`, `clientes_id`) VALUES (null,'2024-07-12 19:53:13',1340.0,'cancelado', 1);
+INSERT INTO `facturas`(`id`, `fecha`, `total`,`estado`, `clientes_id`) VALUES (null,'2024-07-13 19:53:13',420.0,'cancelado', 1);
+INSERT INTO `facturas`(`id`, `fecha`, `total`,`estado`, `clientes_id`) VALUES (null,'2024-07-13 19:53:13',930.0,'cancelado', 1);
+
+INSERT INTO `facturas`(`id`, `fecha`, `total`,`estado`, `clientes_id`) VALUES (null,'2024-06-29 19:53:13',930.0,'pendiente', 1);
+INSERT INTO `facturas`(`id`, `fecha`, `total`,`estado`, `clientes_id`) VALUES (null,'2024-06-29 19:53:13',930.0,'pendiente', 1);
+
+CREATE OR REPLACE TRIGGER actualizar_stock 
+AFTER INSERT ON detalles FOR EACH ROW
+Update productos
+set productos.stock = productos.stock - new.cantidad  
+where productos.id = new.idproducto;
+
+DELIMITER //
+CREATE OR REPLACE TRIGGER `devolver_stock` AFTER UPDATE ON `facturas`
+ FOR EACH ROW BEGIN
+    IF NEW.estado = 'anulado' THEN
+        UPDATE productos p
+        INNER JOIN detalles d ON p.id = d.idproducto
+        SET p.stock = p.stock + d.cantidad
+        WHERE d.facturas_id = NEW.id;
+    END IF;
+END; //
