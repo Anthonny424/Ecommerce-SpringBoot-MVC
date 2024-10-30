@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" type="text/css" th:href="@{/images/css/chart.css}">
+</head>
+<body>
+<div class="container">
+    <h2 style="font-size: 20px;">Facturas emitidas por mes del año 2023</h2>
+    <div>
+<div class="chart">
+    <canvas id="myChart" style="width: 290px; height: 260px;"></canvas>
+</div>
+<script th:inline="javascript">
+    /*<![CDATA[*/
+
+    var label = /*[[ ${label} ]]*/[];
+    var point = /*[[ ${point} ]]*/[];
+    console.log(label);
+    console.log(point);
+
+    /*]]>*/
+</script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script th:src="@{/images/js/grafico3.js}"></script>
+</body>
+</html>

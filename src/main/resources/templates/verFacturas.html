@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <link th:href="@{https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css}" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" th:href="@{/images/css/Estilos.css}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+</head>
+<body>
+<!--navbar-->
+<div class="navbar">
+    <img th:src="@{/images/logoEmpresa.png}" width="60px" height="50px">
+    <div class="busqueda"><form class="form-inline" th:action="@{/home/Busqueda}" method="post">
+        <input class="form-control mr-sm-2" type="search" placeholder="Buscar" aria-label="Search" name="text">
+        <button class="btn btn-outline-success my-2 my-sm-0" type="submit" disabled>Search</button>
+    </form></div>
+    <a th:href="@{/home}">Inicio <i class="fa-solid fa-house"></i></a>
+    <a th:href="@{/home/verProductos}">Productos <i class="fa-solid fa-shop"></i></a>
+    <a th:href="@{/home/verCart}">Ver Carrito <i class="fa-solid fa-cart-shopping"></i></a>
+    <a th:href="@{/home/verFacturas}">Ver Facturas <i class="fa-solid fa-file-lines"></i></a>
+    <a th:href="@{/home/cerrarsession}" th:id="logoutLink" href="#">Logout <i class="fa-solid fa-right-to-bracket"></i></a>
+</div>
+
+<!--contenido-->
+<div class="contenido">
+    <!--datos personales-->
+    <div class="datospersonales" style="visibility: hidden;">
+        <label th:text="'Bienvenido '+${datos.cliente.nombre}"></label>
+    </div>
+    <!--Listado en tabla-->
+    <div class="tabla-facturas">
+        <h1 th:text="'Últimas compras de '+${datos.cliente.nombre}"></i></h1>
+        <br>
+        <table style="width: 100%; border: 1px solid #BEC2C6;">
+            <thead style="background-color: #212529;">
+            <tr>
+                <th>Id</th>
+                <th>Fecha de Compra</th>
+                <th>Total</th>
+                <th>Estado</th>
+                <th>Ver Detalle</th>
+            </tr>
+            </thead>
+            <tr th:each=" fac : ${listaFacturas}">
+                <td th:text="${fac.id}"></td>
+                <td th:text="${fac.fecha}"></td>
+                <td th:text="${fac.total}"></td>
+                <td th:text="${fac.estado}"></td>
+                <td><a th:href="@{/home/verDetalles/}+${fac.id}" class="btn btn-dark">Ver detalles</a></td>
+            </tr>
+
+
+        </table>
+
+
+
+    </div>
+</div>
+<script th:inline="javascript">
+    /*<![CDATA[*/
+    var clienteNombre = /*[[${datos.cliente.nombre}]]*/;
+    var email = /*[[${datos.email}]]*/;
+
+    document.addEventListener('DOMContentLoaded', function() {
+        if (clienteNombre === "Visitante") {
+            Swal.fire({
+                position: "center",
+                icon: "error",
+                title: "Error: Debes tener una cuenta",
+                showConfirmButton: false,
+                timer: 1500
+            }).then(() => {
+                window.history.back();
+            });
+        }
+    });
+    /*]]>*/
+</script>
+<script th:src="@{/images/js/alertSession.js}"></script>
+</body>
+</html>

@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <link th:href="@{https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css}" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" th:href="@{/images/css/Estilos.css}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4/jquery.min.js"></script>
+    <script type="text/javascript" src="https://cdn.rawgit.com/igorlino/elevatezoom-plus/1.1.6/src/jquery.ez-plus.js"></script>
+</head>
+<body>
+<!--navbar-->
+<div class="navbar">
+    <img th:src="@{/images/logoEmpresa.png}" width="60px" height="50px">
+    <div class="busqueda"><form class="form-inline" th:action="@{/home/Busqueda}" method="post">
+        <input class="form-control mr-sm-2" type="search" placeholder="Buscar" aria-label="Search" name="text">
+        <button class="btn btn-outline-success my-2 my-sm-0" type="submit" disabled>Search</button>
+    </form></div>
+    <a th:href="@{/home}">Inicio <i class="fa-solid fa-house"></i></a>
+    <a th:href="@{/home/verProductos}">Productos <i class="fa-solid fa-shop"></i></a>
+    <a th:href="@{/home/verCart}">Ver Carrito <i class="fa-solid fa-cart-shopping"></i></a>
+    <a th:href="@{/home/verFacturas}">Ver Facturas <i class="fa-solid fa-file-lines"></i></a>
+    <a th:href="@{/home/cerrarsession}" th:id="logoutLink" href="#">Logout <i class="fa-solid fa-right-to-bracket"></i></a>
+</div>
+
+<!--contenido-->
+<div class="contenido">
+<!--detalle-->
+ <div class="detalles">
+    <form th:action="@{/home/addCart}" method="post" id="myForm" style="height: 900px;">
+        <input type="hidden" name="id" th:value="${producto.id}">
+    <div class="imagen-detalle">
+    <img th:src="@{'/recursos/'+${producto.ropa.foto}}" id="zoom_07" th:data-zoom-image="@{'/recursos/'+${producto.ropa.foto}}">
+    </div>
+    <div class="info-detalle">
+       <h1 th:text="${producto.ropa.nombre}"></h1>
+    <label th:text="'Descripción: '+${producto.ropa.descripcion}"></label>
+    <label th:text="'Marca: '+${producto.ropa.marca}"></label>
+    <label th:text="'Talla: '+${producto.ropa.talla}"></label>
+    <label th:text="'Stock: '+${producto.stock}"></label>
+    <label th:text="'Género: '+${producto.genero}"></label>
+    <div class="cantidad-detalle"><label>Cantidad: </label><input type="number" min="1" th:max="${producto.stock}" value="0" name="cantidad" id="cantidad" required></div>
+    <h2 th:text="'Precio: S/'+${producto.ropa.precio}"></h2>
+        <input type="submit" class="btn-detalle" value="Añadir al carrito" id="submitButton">
+    </div>
+    </form>
+ </div>
+    <!--footer-->
+    <footer>
+        <img th:src="@{/images/logoEmpresa.png}" class="logoFooter">
+        <div class="social-icons-container">
+            <a th:href="@{/home}" class="social-icon"><i class="fa-brands fa-whatsapp"></i></a>
+            <a th:href="@{/home}" class="social-icon"><i class="fa-brands fa-facebook"></i></a>
+            <a th:href="@{/home}" class="social-icon"><i class="fa-brands fa-instagram"></i></a>
+            <a th:href="@{/home}" class="social-icon"><i class="fa-brands fa-tiktok"></i></a>
+        </div>
+        <ul class="footer-menu-container">
+            <li class="menu-item">Legal</li>
+            <li class="menu-item">Cookies</li>
+            <li class="menu-item">Privacity</li>
+        </ul>
+        <span class="copyright">@2024, Infinity Style. All rights reserved.</span>
+    </footer>
+</div>
+<script th:src="@{/images/js/validarStock.js}"></script>
+<script th:src="@{/images/js/alertDetalle.js}"></script>
+<script th:src="@{/images/js/alertSession.js}"></script>
+<script th:src="@{/images/js/vanilla-tilt.min.js}"></script>
+<script th:src="@{/images/js/ElevateZoomJS.js}"></script>
+</body>
+</html>

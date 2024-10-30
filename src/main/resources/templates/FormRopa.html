@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <link th:href="@{https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css}" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" th:href="@{/images/css/admin.css}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+    <script src="https://unpkg.com/@barba/core"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.8.0/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+</head>
+<body data-barba="wrapper">
+
+<div class="load-container">
+    <div class="loading-screen"></div>
+</div>
+
+<div class="navbar">
+    <div class="titulo">
+        <img th:src="@{/images/logoEmpresa.png}" width="60px" height="50px">
+        <h1>Infinity Style</h1>
+    </div>
+    <div class="opciones">
+        <a th:href="@{/admin}"><i class="fa-solid fa-chart-pie"></i><label>Dashboard</label></a>
+        <a th:href="@{/admin/verStock}"><i class="fa-solid fa-gear"></i><label>Gestión de Stock</label></a>
+        <a th:href="@{/admin/verUsuarios}"><i class="fa-solid fa-users"></i><label>Gestión Usuarios</label></a>
+        <a th:href="@{/admin/verRopaCasual}"><i class="fa-solid fa-shirt"></i><label>Gestión de Prendas</label></a>
+        <a th:href="@{/admin/verReportes}"><i class="fa-solid fa-book"></i><label>Reportes</label></a>
+        <p onclick="redirectToPage()"><i class="fa-solid fa-right-to-bracket"></i><label>Cerrar sesión</label></p>
+    </div>
+</div>
+<div class="contenido" data-barba="container" data-barba-namespace="about-section">
+<div class="formulario">
+    <h4>Formulario de Ropa</h4>
+<form th:action="@{/admin/saveProducto}" method="post" th:object="${ropa}" id="saveStockForm" enctype="multipart/form-data">
+     <input type="hidden" th:field="${ropa.id}" readonly> <!--Id ropa e Id proudcto deben ser el mismo numero en paralelo-->
+    <input type="hidden" th:field="${ropa.producto.id}" readonly>
+    <label>Nombre: </label><input type="text" th:field="${ropa.nombre}"required maxlength="30">
+    <label>Descripción: </label><input type="text" name="descripcion" th:field="${ropa.descripcion}" required maxlength="120">
+    <label>Marca: </label><input type="text" name="marca" th:field="${ropa.marca}" required maxlength="30">
+    <label>Precio: </label><input type="number" name="precio" id="precio" th:field="${ropa.precio}" required min="1.00" step="0.10">
+    <!--Imagen--><label for="file">Subir foto <i class="fa-solid fa-arrow-up-from-bracket"></i></label><input type="file" name="file" id="file">
+    <input type="hidden" th:field="${ropa.foto}" th:value="${ropa.foto}" name="foto">
+    <label>Talla: </label>
+    <select th:field="${ropa.talla}" class="select-box">
+        <option value="S">S</option>
+        <option value="M">M</option>
+        <option value="L">L</option>
+        <option value="XL">XL</option>
+    </select>
+    <label>Género: </label>
+    <select th:field="${ropa.producto.genero}" class="select-box">
+        <option value="Hombre">Hombre</option>
+        <option value="Mujer">Mujer</option>
+    </select>
+    <label>Stock: </label><input type="number" min="1" max="1000" name="stock" id="stock" th:field="${ropa.producto.stock}" required>
+    <label>Categoría: </label>
+    <select th:field="${ropa.producto.categoria}" class="select-box">
+        <option value="Casual">Casual</option>
+        <option value="Deporte">Deporte</option>
+        <option value="Niños">Niños</option>
+        <option value="Formal">Formal</option>
+        <option value="Verano">Verano</option>
+    </select>
+    <input type="hidden" th:field="${ropa.producto.estado}" th:value="'active'">
+    <input type="submit" value="Enviar">
+
+
+</form>
+</div>
+</div>
+<script th:src="@{/images/js/transicion.js}"></script>
+<script th:src="@{/images/js/validarStockNewRopa.js}"></script>
+</body>
+</html>
+

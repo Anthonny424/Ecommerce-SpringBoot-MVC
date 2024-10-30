@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" type="text/css" th:href="@{/images/css/chart.css}">
+</head>
+<body>
+<div class="container">
+    <h2 style="font-size: 20px;">Los 10 productos más comprados</h2>
+    <div>
+<div class="chart">
+    <canvas id="myChart" style="width: 1050px; height: 300px;"></canvas>
+</div>
+<script th:inline="javascript">
+    /*<![CDATA[*/
+
+    var label = /*[[ ${label} ]]*/[];
+    var point = /*[[ ${point} ]]*/[];
+    console.log(label);
+    console.log(point);
+
+    /*]]>*/
+</script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script th:src="@{/images/js/grafico5.js}"></script>
+</body>
+</html>
